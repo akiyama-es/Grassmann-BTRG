@@ -25,3 +25,4 @@ You can specify the parameters $M$, $\mu$, $g^{2}$, $D$, $N$, and $k$ from the c
 
 - [D. Adachi, T. Okubo, and S. Todo, Bond-weighted Tensor Renormalization Group, PRB105(2022)L060402](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.105.L060402).
 - [S. Akiyama, Bond-weighting method for the Grassmann tensor renormalization group, JHEP11(2022)030](https://link.springer.com/article/10.1007/JHEP11(2022)030).
+- [S. Akiyama and D. Kadoh, More about the Grassmann tensor renormalization group, JHEP10(2021)188](https://link.springer.com/article/10.1007/JHEP10(2021)188).
