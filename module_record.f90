@@ -12,7 +12,15 @@ module module_record
 
             if ( coupling == 0d0 ) then
 
-                write(*,"( a5, a1, a16, a1, a16 )") 'ITER', ' ', 'lnZ/V', ' ', 'Relative Error'
+                if ( flag_exact == 'y' ) then
+
+                    write(*,"( a5, a1, a16, a1, a16 )") 'ITER', ' ', 'lnZ/V', ' ', 'Relative Error'
+
+                elseif ( flag_exact == 'n' ) then
+
+                    write(*,"( a5, a1, a16 )") 'ITER', ' ', 'lnZ/V'
+
+                endif
 
             elseif ( coupling /= 0d0 ) then
 
@@ -30,7 +38,15 @@ module module_record
 
             if ( mod(iter,2) == 0 ) then
 
-                write(*,"( i5, a1, f16.13, a1, f16.13 )") iter, ' ', real(lnz(iter)), ' ', relative_error(iter)
+                if ( flag_exact == 'y' ) then
+
+                    write(*,"( i5, a1, f16.13, a1, f16.13 )") iter, ' ', real(lnz(iter)), ' ', relative_error(iter)
+
+                elseif ( flag_exact == 'n' ) then
+
+                    write(*,"( i5, a1, f16.13 )") iter, ' ', real(lnz(iter))
+    
+                endif
 
             elseif ( mod(iter,2) /= 0 ) then
 
