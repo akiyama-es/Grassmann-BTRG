@@ -19,7 +19,7 @@ $$Z={\mathrm{gTr}}\left[\prod_{n}\mathcal{T}_{n}\right]$$.
 
 ## Note
 
-You can specify the parameters $M$, $\mu$, $g^{2}$, $D$, $N$, and $k$ from the command line by executing the file named "GBTRG". If you set $g^{2}=0$, then the code can calculate the relative error of ${\mathrm{ln}}Z$, based on the diagonalization of the Dirac matrix in the momentum space. However, the diagonalization may require much longer time compared with the BTRG calculation, so you can omit it from the command line if you want.
+You can specify the parameters $M$, $\mu$, $g^{2}$, $D(\ge4)$, $N$, and $k$ from the command line by executing the file named "GBTRG". If you set $g^{2}=0$, then the code can calculate the relative error of ${\mathrm{ln}}Z$, based on the diagonalization of the Dirac matrix in the momentum space. However, the diagonalization may require much longer time compared with the BTRG calculation, so you can omit it from the command line if you want.
 
 ## Reference
 
