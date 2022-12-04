@@ -15,7 +15,7 @@ The BTRG approximately calculates the path integral,
 $$Z=\int[{\mathrm{d}}\psi{\mathrm{d}}\bar{\psi}]{\mathrm e}^{-S}$$,
 which is represented as the Grassmann tensor network,
 $$Z={\mathrm{gTr}}\left[\prod_{n}\mathcal{T}_{n}\right]$$.
-**You can freely choose the bond dimension $D$, iteration number $N$, which is interpreted as the system volume $V$ via $V=2^{N}$, and the hyperparameter $k$.** With $k=0$, the BTRG is reduced to be the Levin-Nave TRG. The optimal choice of $k$ on a square lattice is $k=-0.5$. Please see the references shown below.
+**You can freely choose the bond dimension $D(\ge4)$, iteration number $N$, which is interpreted as the system volume $V$ via $V=2^{N}$, and the hyperparameter $k$.** With $k=0$, the BTRG is reduced to be the Levin-Nave TRG. The optimal choice of $k$ on a square lattice is $k=-0.5$. Please see the references shown below.
 
 ## Note
 
