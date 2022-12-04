@@ -30,12 +30,25 @@ module module_setup
         endif
 
         write(*,*) ' Set the parameters in Grassmann BTRG : '
-        write(*,*) ' Bond dimension ? '
+        write(*,*) ' Bond dimension D ? '
+        write(*,*) ' REMARK: '
+        write(*,*) ' The initial tensor network is written by D=4.  '
+        write(*,*) ' D must be equal to or greater than 4. '
         read(*,*) D1
-        write(*,*) ' Iteration number n ? ( n iterations give us the lattice voulume of 2^n ) '
+
+        if ( D1 < 4 ) then
+
+            write(*,*) ' ERROR: '
+            write(*,*) ' D must be equal to or greater than 4. '
+            stop
+
+        endif
+
+        write(*,*) ' Iteration number n ? ( n iterations give us the lattice volume of 2^n ) '
         read(*,*) maxiter
         write(*,*) ' hyperparameter k in BTRG ? '
-        write(*,*) ' Optimal BTRG >>> k = -0.5 ( type -0.5 ), Levin-Nave TRG >>> k = 0.0 ( type 0.0 ) '
+        write(*,*) ' Optimal BTRG >>> k = -0.5 ( type -0.5 ) '
+        write(*,*) ' Levin-Nave TRG >>> k = 0.0 ( type 0.0 ) '
         read(*,*) hyper
 
         iter = 0
