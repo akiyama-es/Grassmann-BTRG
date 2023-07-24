@@ -60,8 +60,6 @@ module module_record
 
     subroutine record_svd_result(s,size_s,s_trunc,size_s_trunc,size_even,index,iteration)
 
-        !use module_declaration
-
         implicit none
 
         character(len=256) file

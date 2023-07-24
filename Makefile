@@ -20,12 +20,12 @@ OBJS = \
 	module_phase.o\
 	module_measurement.o\
 	module_initial_tensor.o\
-	module_setup.o\
 	module_trg.o\
+	module_setup.o\
 	main.o \
 
 GBTRG: $(OBJS)
 	$(f90) -o $@ $(OBJS)
 
 clean:
-	rm *.o *.mod *.lst GBTRG
+	rm *.o *.mod GBTRG

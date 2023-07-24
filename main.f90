@@ -1,7 +1,6 @@
 program main
 
     use module_setup
-    use module_trg
     use module_record
     use module_time
 

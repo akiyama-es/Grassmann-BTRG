@@ -19,7 +19,7 @@ module module_declaration
 
     !!! Parameters in Gross-Neveu-Wilson model
 
-    double precision mass, mu, ext, coupling
+    double precision mass, mu, coupling
 
     !!! Hyperparameter in the BTRG
     
@@ -49,7 +49,6 @@ module module_declaration
 
     character(len=1) flag_exact
 
-    complex(kind(0d0)), allocatable :: exact(:)
     double precision, allocatable :: relative_error(:)
 
 end module module_declaration

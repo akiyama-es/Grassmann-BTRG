@@ -2,9 +2,7 @@ module module_initial_tensor
 
     contains
 
-    subroutine get_init_tensor(output)
-
-        use module_declaration
+    subroutine get_init_tensor(input_mu,input_mass,input_coupling,output)
 
         implicit none
 
@@ -13,7 +11,7 @@ module module_initial_tensor
         integer nx, nt, px, pt
         integer i, pow(6)
         integer convert(0:1,0:1)
-        
+        double precision, intent(in) :: input_mass, input_coupling, input_mu
         complex(kind(0d0)), allocatable :: temporary_1(:,:,:,:,:,:,:,:), temporary_2(:,:,:,:,:,:,:,:)
         complex(kind(0d0)), intent(out) :: output(4*4*4*4)
 
@@ -33,9 +31,9 @@ module module_initial_tensor
         allocate(temporary_1(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1))
         allocate(temporary_2(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1))
 
-        call get_phase_tensor(temporary_1)
+        call get_phase_tensor(input_mu,temporary_1)
 
-        call get_coeff_tensor(temporary_2)
+        call get_coeff_tensor(input_mass,input_coupling,temporary_2)
 
         do pj_2 = 0, 1
 
@@ -85,16 +83,14 @@ module module_initial_tensor
 
     end subroutine
 
-    subroutine get_phase_tensor(output)
-
-        use module_declaration
+    subroutine get_phase_tensor(input_mu,output)
 
         implicit none
 
         integer i_1, j_1, i_2, j_2
         integer pi_1, pj_1, pi_2, pj_2
-
         integer, allocatable :: phase(:,:,:,:,:,:,:,:)
+        double precision, intent(in) :: input_mu
         complex(kind(0d0)), intent(out) :: output(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1)
 
         allocate(phase(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1))
@@ -128,7 +124,7 @@ module module_initial_tensor
                                         output(i_1,j_1,i_2,j_2,pi_1,pj_1,pi_2,pj_2) &
                                         = phase(i_1,j_1,i_2,j_2,pi_1,pj_1,pi_2,pj_2) &
                                         * (-1d0)**(pi_1+pi_2) &
-                                        * exp(0.5d0*mu*dble(i_2-j_2+pi_2-pj_2)) &
+                                        * exp(0.5d0*input_mu*dble(i_2-j_2+pi_2-pj_2)) &
                                         * (1d0/sqrt(2d0))**(i_1+j_1+i_2+j_2+pi_1+pj_1+pi_2+pj_2)
 
                                     enddo
@@ -151,15 +147,14 @@ module module_initial_tensor
 
     end subroutine
 
-    subroutine get_coeff_tensor(output)
-
-        use module_declaration
+    subroutine get_coeff_tensor(input_mass,input_coupling,output)
 
         implicit none
 
         integer i_1, j_1, i_2, j_2
         integer pi_1, pj_1, pi_2, pj_2
 
+        double precision, intent(in) :: input_mass, input_coupling
         double precision delta(0:4,0:1)
         complex(kind(0d0)) temporary_1(0:1,0:1,0:1,0:1), temporary_2(0:1,0:1,0:1,0:1)
         complex(kind(0d0)), intent(out) :: output(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1)
@@ -190,10 +185,10 @@ module module_initial_tensor
                                     do i_1 = 0, 1
 
                                         output(i_1,j_1,i_2,j_2,pi_1,pj_1,pi_2,pj_2) &
-                                        = ((mass+2d0+ext)*(mass+2d0-ext)+coupling) &
+                                        = ((input_mass+2d0)*(input_mass+2d0)+input_coupling) &
                                         *delta(pj_2+pj_1+i_2+i_1,0)*delta(pi_2+pi_1+j_2+j_1,0) &
-                                        -(mass+2d0-ext)*delta(pj_2+pj_1+i_2+i_1,1)*delta(pi_2+pi_1+j_2+j_1,1) &
-                                        -(mass+2d0+ext)*delta(pj_2+pj_1+i_2+i_1,1)*delta(pi_2+pi_1+j_2+j_1,1) &
+                                        -(input_mass+2d0)*delta(pj_2+pj_1+i_2+i_1,1)*delta(pi_2+pi_1+j_2+j_1,1) &
+                                        -(input_mass+2d0)*delta(pj_2+pj_1+i_2+i_1,1)*delta(pi_2+pi_1+j_2+j_1,1) &
                                         *(-1d0)**(i_2+i_1+pi_1+j_2)*(0d0,1d0)**(pj_2+i_2+pi_2+j_2) &
                                         -temporary_2(pj_2,pj_1,i_2,i_1)*temporary_1(pi_2,pi_1,j_2,j_1)
 
@@ -217,13 +212,11 @@ module module_initial_tensor
 
     subroutine get_fundamental_tensor_1(output)
 
-        use module_declaration
-
         implicit none
 
         integer j_2, j_1
         integer pi_2, pi_1
-        integer flag, i
+        integer i
         complex(kind(0d0)) array_1(2), array_2(2), array_3(2), array_4(2)
         complex(kind(0d0)) matrix(4)
         complex(kind(0d0)), intent(out) :: output(0:1,0:1,0:1,0:1)
@@ -353,13 +346,11 @@ module module_initial_tensor
 
     subroutine get_fundamental_tensor_2(output)
 
-        use module_declaration
-
         implicit none
 
         integer i_2, i_1
         integer pj_2, pj_1
-        integer flag, i
+        integer i
         complex(kind(0d0)) array_1(2), array_2(2), array_3(2), array_4(2)
         complex(kind(0d0)) matrix(4)
         complex(kind(0d0)), intent(out) :: output(0:1,0:1,0:1,0:1)

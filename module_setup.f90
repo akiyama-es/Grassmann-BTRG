@@ -13,9 +13,6 @@ module module_setup
         read(*,*) mass
         write(*,*) ' Chemical potential ? '
         read(*,*) mu
-        !write(*,*) ' External Field ? '
-        !read(*,*) ext
-        ext = 0d0
         write(*,*) ' Four-point coupling ? '
         read(*,*) coupling
 
@@ -91,7 +88,7 @@ module module_setup
 
         temporary = (0d0,0d0)
 
-        call get_init_tensor(temporary)
+        call get_init_tensor(mu,mass,coupling,temporary)
 
         do i = 1, size(temporary)
 
@@ -103,6 +100,68 @@ module module_setup
         
     end subroutine
 
+    subroutine btrg_loop()
+
+        use module_declaration
+        use module_record
+        
+        implicit none
+
+        do while ( iter < maxiter )
+
+            iter = iter + 1
+
+            call set_new_index()
+
+            call get_new_tensor()
+
+            call measurement()
+
+            call update_index()
+
+            call print_result()
+
+        enddo
+
+    end subroutine
+
+    subroutine get_new_tensor()
+
+        use module_declaration
+        use module_trg
+
+        implicit none
+        
+        double precision, allocatable :: s_0(:), s_1(:)
+        complex(kind(0d0)), allocatable :: u_0(:), v_0(:), u_1(:), v_1(:)
+
+        allocate(s_0(min(bond(1)*bond(2),D1)))
+        allocate(u_0(bond(1)*bond(2)*min(bond(1)*bond(2),D1)))
+        allocate(v_0(bond(1)*bond(2)*min(bond(1)*bond(2),D1)))
+        allocate(s_1(size(s_0)))
+        allocate(u_1(size(u_0)))
+        allocate(v_1(size(v_0)))
+
+        s_0 = 0d0
+        u_0 = (0d0,0d0)
+        v_0 = (0d0,0d0)
+        s_1 = 0d0
+        u_1 = (0d0,0d0)
+        v_1 = (0d0,0d0)
+
+        call svd_even_site(bond,bond_even,tensor,iter,D1,s_0,u_0,v_0,bond_even_new(2))
+        call svd_odd_site(bond,bond_even,tensor,iter,D1,s_1,u_1,v_1,bond_even_new(1))
+
+        call contraction(bond,bond_even,bond_new,bond_even_new,s_0,u_0,v_0,s_1,u_1,v_1,bond_weight_1,bond_weight_2,D1,hyper,tensor)
+
+        call update_bond_weights(size(s_0),D1,hyper,s_0,bond_weight_2)
+        call update_bond_weights(size(s_1),D1,hyper,s_1,bond_weight_1)
+
+        deallocate(s_0,u_0,v_0)
+        deallocate(s_1,u_1,v_1)
+
+    end subroutine
+
     subroutine measurement()
 
         use module_declaration
@@ -110,13 +169,13 @@ module module_setup
 
         implicit none
 
-        call get_trace()
+        call get_trace(bond_new,bond_even_new,tensor,bond_weight_1,bond_weight_2,D1,boundary_condition,part(iter))
 
-        call get_lnz()
+        call get_lnz(iter,maxiter,part,lnz(iter))
 
         if ( flag_exact == 'y' .and. mod(iter,2) == 0 ) then
 
-            call get_relative_error()
+            call get_relative_error(iter,mass,mu,lnz(iter),relative_error(iter))
 
         endif 
 
@@ -185,7 +244,6 @@ module module_setup
         allocate(bond_weight_2(D1*D1))
         allocate(part(0:maxiter))
         allocate(lnz(0:maxiter))
-        allocate(exact(0:maxiter))
         allocate(relative_error(0:maxiter))
         allocate(f_norm_1(0:maxiter))
         allocate(f_norm_2(0:maxiter))
@@ -195,7 +253,6 @@ module module_setup
         bond_weight_2 = 0d0
         part = (0d0,0d0)
         lnz = (0d0,0d0)
-        exact = (0d0,0d0)
         relative_error = 0d0
         f_norm_1 = 1d0
         f_norm_2 = 1d0
@@ -210,7 +267,7 @@ module module_setup
 
         deallocate(tensor,part,lnz)
         deallocate(bond_weight_1,bond_weight_2)
-        deallocate(exact,relative_error)
+        deallocate(relative_error)
         deallocate(f_norm_1,f_norm_2)
 
     end subroutine
