@@ -8,6 +8,8 @@ module module_record
 
         implicit none
 
+        integer i
+
         if ( iter == 0 ) then
 
             if ( coupling == 0d0 ) then
@@ -53,6 +55,20 @@ module module_record
                 write(*,"( i5, a1, f16.13 )") iter, ' ', real(lnz(iter))
 
             endif
+
+        endif
+
+        if ( iter == maxiter ) then
+
+            open(40,file='results.dat')
+
+            do i = 1, maxiter
+
+                write(40,"( i5, a1, f16.13, a1, f16.13 )") i, ' ', real(lnz(i)), ' ', imag(lnz(i))
+
+            enddo
+
+            close(40)
 
         endif
 

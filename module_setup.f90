@@ -5,6 +5,7 @@ module module_setup
     subroutine load_input_trg()
 
         use module_declaration
+        use module_initial_tensor
 
         implicit none
 
@@ -50,27 +51,7 @@ module module_setup
 
         iter = 0
 
-    end subroutine
-
-    subroutine load_input_init_size()
-
-        use module_declaration
-
-        implicit none
-
-        integer i
-
-        bond(1) = 4
-        bond(2) = 4
-        bond_even(1) = 2
-        bond_even(2) = 2
-
-        do i = 1, 2
-
-            bond_new(i) = bond(i)
-            bond_even_new(i) = bond_even(i)
-
-        enddo
+        call load_input_init_size(bond,bond_even,bond_new,bond_even_new)
 
     end subroutine
 

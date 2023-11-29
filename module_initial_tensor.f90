@@ -477,5 +477,28 @@ module module_initial_tensor
         enddo
 
     end subroutine
+
+    subroutine load_input_init_size(initial_size,initial_size_even,new_size,new_size_even)
+
+        implicit none
+
+        integer, intent(out) :: initial_size(2), initial_size_even(2)
+        integer, intent(out) :: new_size(2), new_size_even(2)
+
+        integer i
+
+        initial_size(1) = 4
+        initial_size(2) = 4
+        initial_size_even(1) = 2
+        initial_size_even(2) = 2
+
+        do i = 1, 2
+
+            new_size(i) = initial_size(i)
+            new_size_even(i) = initial_size_even(i)
+
+        enddo
+
+    end subroutine
     
 end module module_initial_tensor

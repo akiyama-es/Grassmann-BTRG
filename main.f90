@@ -10,8 +10,6 @@ program main
 
     call load_input_trg()
 
-    call load_input_init_size()
-
     call allocate_memory()
 
     call load_input_init_tensor()
