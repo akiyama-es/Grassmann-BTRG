@@ -9,6 +9,8 @@ module module_setup
 
         implicit none
 
+        !!!!!!!!!! Model dependent !!!!!!!!!
+
         write(*,*) ' Set the parameters in Gross-Neveu-Wilson model : '
         write(*,*) ' Mass ? '
         read(*,*) mass
@@ -26,6 +28,10 @@ module module_setup
             read(*,*) flag_exact
 
         endif
+
+        !!!!!!!!!!!!!!!!!!!
+
+        !!!!!!!!!! Algorithmic parameters (independent of the initial tensor) !!!!!!!!!
 
         write(*,*) ' Set the parameters in Grassmann BTRG : '
         write(*,*) ' Bond dimension D ? '
@@ -48,6 +54,8 @@ module module_setup
         write(*,*) ' Optimal BTRG >>> k = -0.5 ( type -0.5 ) '
         write(*,*) ' Levin-Nave TRG >>> k = 0.0 ( type 0.0 ) '
         read(*,*) hyper
+
+        !!!!!!!!!!!!!!!!!!!
 
         iter = 0
 
