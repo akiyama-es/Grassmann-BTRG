@@ -1,5 +1,9 @@
 module module_initial_tensor
 
+    !!!!! This module generates the initial tensor for the Grassmann-BTRG.
+    !!!!! By modifying this module, you can compute other two-dimensional models including fermions.
+    !!!!! If you have questions, please feel free to ask me (akiyama_at_phys.s.u-tokyo.ac.jp).
+
     contains
 
     subroutine get_init_tensor(input_mu,input_mass,input_coupling,output)
@@ -23,10 +27,15 @@ module module_initial_tensor
 
         enddo
 
+        !!!!! This is a map from two-bit string to an integer in Z4. 
+        !!!!! This encoding method is explained in https://pos.sissa.it/396/530
+
         convert(0,0) = 1
         convert(1,1) = 2
         convert(1,0) = 3
         convert(0,1) = 4
+
+        !!!!
 
         allocate(temporary_1(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1))
         allocate(temporary_2(0:1,0:1,0:1,0:1,0:1,0:1,0:1,0:1))
